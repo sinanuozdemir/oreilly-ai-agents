@@ -22,3 +22,5 @@ examples/
 .DS_Store
 
 streamlit/secrets.toml
+notebooks/ai.txt
+notebooks/db/
