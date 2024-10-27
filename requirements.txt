@@ -1,0 +1,5 @@
+streamlit
+crewai-tools
+crewai
+google-search-results
+jupyter
