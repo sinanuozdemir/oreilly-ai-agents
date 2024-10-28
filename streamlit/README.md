@@ -48,7 +48,6 @@ This guide will help you set up and run the Streamlit app.
    ```toml
    [general]
    OPENAI_API_KEY = "your-openai-api-key"
-   SERP_API_KEY = "your-serpapi-api-key"
    ```
 
 4. **Run the App**
