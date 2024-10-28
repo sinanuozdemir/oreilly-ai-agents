@@ -54,9 +54,15 @@ In the activated environment, run
 python3 -m jupyter notebook
 ```
 
-- **[Intro to CrewAI](notebooks/CrewAI_Hello_World.ipynb)** - An introductory notebook for CrewAI
+- **Using 3rd party agent frameworks**
+	
+	- **[Intro to CrewAI](notebooks/CrewAI_Hello_World.ipynb)** - An introductory notebook for CrewAI
+	
+	- **[Intro to OpenAI Swarm](notebooks/Swarm_Hello_World.ipynb)** - An introductory notebook for OpenAI's Swarm
+	
+	
+	- See **[the streamlit directory](./streamlit)** for an example of deploying crew on a streamlit app
 
-- **[Intro to OpenAI Swarm](notebooks/Swarm_Hello_World.ipynb)** - An introductory notebook for OpenAI's Swarm
 
 - **Evaluating Agents**
 
@@ -64,14 +70,14 @@ python3 -m jupyter notebook
 
 	- **[Evaluating Alignment](notebooks/evaluating_alignment.ipynb)** - Seeing how an LLM can judge agent's responses
 
-- **[First Steps with our own Agent](https://colab.research.google.com/drive/14jAlW2E7ya_aS1M6eUsuHciC1WvLfIif?usp=sharing)** - Working towards building our own agent framework
-
-- See **[the streamlit directory](./streamlit)** for an example of deploying crew on a streamlit app
-
-- See **[Squad Goals](https://github.com/sinanuozdemir/squad-goals)** for a very simple example of my own agent framework
-
-	- **[Intro to Squad Goals](notebooks/SquadGoals_Hello_World.ipynb)** - using my own framework to do some basic tasks
-
+- **Building our own agents**
+	
+	- **[First Steps with our own Agent](https://colab.research.google.com/drive/14jAlW2E7ya_aS1M6eUsuHciC1WvLfIif?usp=sharing)** - Working towards building our own agent framework
+	
+	- See **[Squad Goals](https://github.com/sinanuozdemir/squad-goals)** for a very simple example of my own agent framework
+	
+		- **[Intro to Squad Goals](notebooks/SquadGoals_Hello_World.ipynb)** - using my own framework to do some basic tasks
+	
 
 ## Instructor
 
