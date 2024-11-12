@@ -70,6 +70,8 @@ python3 -m jupyter notebook
 
 	- **[Evaluating Alignment](notebooks/evaluating_alignment.ipynb)** - Seeing how an LLM can judge agent's responses
 
+ 	- **[Evaluating Tool Selection](notebooks/agent_positional_bias_tools.ipynb)** - Calculating the accuracy of tool selection between different LLMs and quantifying the positional bias present in auto-regressive LLMs
+
 - **Building our own agents**
 	
 	- **[First Steps with our own Agent](https://colab.research.google.com/drive/14jAlW2E7ya_aS1M6eUsuHciC1WvLfIif?usp=sharing)** - Working towards building our own agent framework
