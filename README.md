@@ -57,12 +57,13 @@ python3 -m jupyter notebook
 - **Using 3rd party agent frameworks**
 	
 	- **[Intro to CrewAI](notebooks/CrewAI_Hello_World.ipynb)** - An introductory notebook for CrewAI
+
+		- See **[the streamlit directory](./streamlit)** for an example of deploying crew on a streamlit app
 	
 	- **[Intro to OpenAI Swarm](notebooks/Swarm_Hello_World.ipynb)** - An introductory notebook for OpenAI's Swarm
 	
 	
-	- See **[the streamlit directory](./streamlit)** for an example of deploying crew on a streamlit app
-
+	- **[Intro to LangGraph](notebooks/LangGraph_Hello_World.ipynb)** - An introductory notebook for LangGraph
 
 - **Evaluating Agents**
 
