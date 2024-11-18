@@ -9,42 +9,91 @@ This course provides a comprehensive guide to understanding, implementing, and m
 
 ## Setup Instructions
 
-1. **Create and Activate Virtual Environment**
 
-   Create a virtual environment using Python 3.10:
+### Using Python 3.11 Virtual Environment
 
-   ```bash
-   python3.10 -m venv venv
-   ```
+At the time of writing, we need a Python virtual environment with Python 3.11.
 
-   Activate the virtual environment:
+#### Option 1: Python 3.11 is Already Installed
 
-   - **macOS/Linux**:
+##### Step 1: Verify Python 3.11 Installation
 
-     ```bash
-     source venv/bin/activate
-     ```
+```bash
+python3.11 --version
+```
 
-   - **Windows**:
+##### Step 2: Create a Virtual Environment
 
-     ```bash
-     venv\Scripts\activate
-     ```
+```bash
+python3.11 -m venv .venv
+```
 
-2. **Install Dependencies**
+This creates a `.venv` folder in your current directory.
 
-   With the virtual environment activated, install dependencies from `requirements.txt`:
+##### Step 3: Activate the Virtual Environment
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-   
-   You might need to do:
-   
-	```bash
-	python3 -m pip install -r requirements.txt
-	```
+- **macOS/Linux:**
+  
+  ```bash
+  source .venv/bin/activate
+  ```
 
+- **Windows:**
+  
+  ```cmd
+  .venv\Scripts\activate
+  ```
+
+You should see `(.venv)` in your terminal prompt.
+
+##### Step 4: Verify the Python Version
+
+```bash
+python --version
+```
+
+##### Step 5: Install Packages
+
+```bash
+pip install -r requirements.txt
+```
+
+##### Step 6: Deactivate the Virtual Environment
+
+```bash
+deactivate
+```
+
+---
+
+#### Option 2: Install Python 3.11
+
+If you don’t have Python 3.11, follow the steps below for your OS.
+
+##### **macOS (Using Homebrew)**
+
+```bash
+brew install python@3.11
+```
+
+##### **Ubuntu/Debian**
+
+```bash
+sudo apt update
+sudo apt install python3.11 python3.11-venv
+```
+
+##### **Windows (Using Windows Installer)**
+
+1. Go to [Python Downloads](https://www.python.org/downloads/release/python-3110/).
+2. Download the installer for Python 3.11.
+3. Run the installer and ensure **"Add Python 3.11 to PATH"** is checked.
+
+### Verify Installation
+
+```bash
+python3.11 --version
+```
 
 ## Notebooks
 
