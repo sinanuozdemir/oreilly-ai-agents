@@ -7,3 +7,6 @@ git+https://github.com/openai/swarm.git
 langchain-community
 duckduckgo-search
 onnxruntime
+langgraph
+datasets
+matplotlib

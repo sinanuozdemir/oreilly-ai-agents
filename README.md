@@ -116,9 +116,9 @@ python3 -m jupyter notebook
 
 - **Evaluating Agents**
 
-	- **[Evaluating LLMs with Rubrics](https://colab.research.google.com/drive/1DeVYrdNb3FlQQLeBqGPFkx6roZaPwVRy?usp=sharing)** - Exploring a rubric prompt to evaluate generative output
+	- **[Evaluating LLMs with Rubrics](notebooks/Evaluating_LLMs_with_Rubrics.ipynb)** - Exploring a rubric prompt to evaluate generative output
 
-	- **[Evaluating Alignment](notebooks/evaluating_alignment.ipynb)** - Seeing how an LLM can judge agent's responses
+		- **[Advanced - Evaluating Alignment](notebooks/evaluating_alignment.ipynb)** - A longer notebook doing a much more in depth analysis on how an LLM can judge agent's responses
 
  	- **[Evaluating Tool Selection](notebooks/agent_positional_bias_tools.ipynb)** - Calculating the accuracy of tool selection between different LLMs and quantifying the positional bias present in auto-regressive LLMs
 
