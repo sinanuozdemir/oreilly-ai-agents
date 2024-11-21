@@ -116,7 +116,7 @@ python3 -m jupyter notebook
 
 - **Evaluating Agents**
 
-	- **[Evaluating LLMs with Rubrics](notebooks/Evaluating_LLMs_with_Rubrics.ipynb)** - Exploring a rubric prompt to evaluate generative output
+	- **[Evaluating Agent Output with Rubrics](notebooks/Evaluating_LLMs_with_Rubrics.ipynb)** - Exploring a rubric prompt to evaluate generative output. This notebook also notes positional biases when choosing between agent responses.
 
 		- **[Advanced - Evaluating Alignment](notebooks/evaluating_alignment.ipynb)** - A longer notebook doing a much more in depth analysis on how an LLM can judge agent's responses
 
@@ -129,7 +129,13 @@ python3 -m jupyter notebook
 	- See **[Squad Goals](https://github.com/sinanuozdemir/squad-goals)** for a very simple example of my own agent framework
 	
 		- **[Intro to Squad Goals](notebooks/SquadGoals_Hello_World.ipynb)** - using my own framework to do some basic tasks
+
+
+- **Modern Agent Paradigms**
 	
+	-  **[Plan & Execute Agents](notebooks/LangGraph_Plan_Execute.ipynb)** - Plan & Execute Agents use a planner to create multi-step plans with an LLM and an executor to complete each step by invoking tools.
+
+	-  **[Reflection Agents](notebooks/LangGraph_Reflect.ipynb)** - Reflection Agents combine a generator to perform tasks and a reflector to provide feedback and guide improvements.
 
 ## Instructor
 
