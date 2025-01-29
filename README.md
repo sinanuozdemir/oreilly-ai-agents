@@ -120,7 +120,7 @@ python3 -m jupyter notebook
 
 		- **[Advanced - Evaluating Alignment](notebooks/evaluating_alignment.ipynb)** - A longer notebook doing a much more in depth analysis on how an LLM can judge agent's responses
 
- 	- **[Evaluating Tool Selection](notebooks/agent_positional_bias_tools.ipynb)** - Calculating the accuracy of tool selection between different LLMs and quantifying the positional bias present in auto-regressive LLMs
+ 	- **[Evaluating Tool Selection](notebooks/agent_positional_bias_tools.ipynb)** - Calculating the accuracy of tool selection between different LLMs and quantifying the positional bias present in auto-regressive LLMs. See the addition [here](notebooks/agent_positional_bias_tools - DEEPSEEK edition.ipynb) to test some DeepSeek models
 
 - **Building our own agents**
 	
@@ -129,6 +129,7 @@ python3 -m jupyter notebook
 	- See **[Squad Goals](https://github.com/sinanuozdemir/squad-goals)** for a very simple example of my own agent framework
 	
 		- **[Intro to Squad Goals](notebooks/SquadGoals_Hello_World.ipynb)** - using my own framework to do some basic tasks
+		- **[Multimodal Agents](notebooks/squad_visual_agent.ipynb)** - Incorporating Dalle-3 to allow our squad to generate images
 
 
 - **Modern Agent Paradigms**
