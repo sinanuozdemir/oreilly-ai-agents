@@ -109,6 +109,8 @@ python3 -m jupyter notebook
 
 		- See **[the streamlit directory](./streamlit)** for an example of deploying crew on a streamlit app
 	
+	- **[Intro to Autogen](notebooks/Autogen_HelloWorld.ipynb)** - An introductory notebook for Microsoft's Autogen
+	
 	- **[Intro to OpenAI Swarm](notebooks/Swarm_Hello_World.ipynb)** - An introductory notebook for OpenAI's Swarm
 	
 	
@@ -122,7 +124,7 @@ python3 -m jupyter notebook
 
 		- **[Advanced - Evaluating Alignment](notebooks/evaluating_alignment.ipynb)** - A longer notebook doing a much more in depth analysis on how an LLM can judge agent's responses
 
- 	- **[Evaluating Tool Selection](notebooks/agent_positional_bias_tools.ipynb)** - Calculating the accuracy of tool selection between different LLMs and quantifying the positional bias present in auto-regressive LLMs. See the addition [here](notebooks/agent_positional_bias_tools%20-%20DEEPSEEK%20edition.ipynb) to test some DeepSeek models
+ 	- **[Evaluating Tool Selection](notebooks/agent_positional_bias_tools.ipynb)** - Calculating the accuracy of tool selection between different LLMs and quantifying the positional bias present in auto-regressive LLMs. See the additions [here for V3 + DeepSeek Distilled Models](notebooks/agent_positional_bias_tools%20-%20DEEPSEEK%20edition.ipynb) and [here for DeepSeek R1](notebooks/agent_positional_bias_tools%20-%20DEEPSEEK%20R1.ipynb)
 
 - **Building our own agents**
 	
