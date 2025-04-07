@@ -142,6 +142,11 @@ python3 -m jupyter notebook
 	-  **[Plan & Execute Agents](notebooks/LangGraph_Plan_Execute.ipynb)** - Plan & Execute Agents use a planner to create multi-step plans with an LLM and an executor to complete each step by invoking tools.
 
 	-  **[Reflection Agents](notebooks/LangGraph_Reflect.ipynb)** - Reflection Agents combine a generator to perform tasks and a reflector to provide feedback and guide improvements.
+  
+ 	-  Using open source [Qwen VL 72B](https://colab.research.google.com/drive/1TYqAtnk1m_gLpCF5KY8WaNNOkfcYuBsy?usp=sharing) to grab bounding boxes of elements
+  
+  	-  Amazon's Nova Act for Browser Use in Action
+  		-   run `python nova_apt.py --caltrain_city "Dogpatch" --bedrooms 2 --baths 2` in the notebooks directory
 
 ## Instructor
 
