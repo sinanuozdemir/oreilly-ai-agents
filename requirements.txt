@@ -10,3 +10,4 @@ onnxruntime
 langgraph
 datasets
 matplotlib
+openai-agents

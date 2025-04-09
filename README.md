@@ -114,6 +114,7 @@ python3 -m jupyter notebook
 	
 	- **[Intro to OpenAI Swarm](notebooks/Swarm_Hello_World.ipynb)** - An introductory notebook for OpenAI's Swarm
 	
+	- **[Intro to OpenAI Agents](notebooks/Openai%20Agents.ipynb)** - An introductory notebook for OpenAI's newer Agents SDK
 	
 	- **[Intro to LangGraph](notebooks/LangGraph_Hello_World.ipynb)** - An introductory notebook for LangGraph
 
