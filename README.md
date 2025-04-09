@@ -118,6 +118,8 @@ python3 -m jupyter notebook
 	
 	- **[Intro to LangGraph](notebooks/LangGraph_Hello_World.ipynb)** - An introductory notebook for LangGraph
 
+		-  **[ReAct Agents in LangGraph](notebooks/LangGraph_React.ipynb)** - Simple ReAct Agent with tools in Langgraph.
+
 		- **[Agents playing Chess](https://colab.research.google.com/drive/1NMb4H8q-N0ZgEdaiDd6qUaBLD21yLejD?usp=sharing)** - An implementation of two ReAct Agents playing Chess with each other
 
 - **Evaluating Agents**
