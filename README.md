@@ -112,15 +112,24 @@ python3 -m jupyter notebook
 	
 	- **[Intro to Autogen](notebooks/Autogen_HelloWorld.ipynb)** - An introductory notebook for Microsoft's Autogen
 	
+- **OpenAI**
+
 	- **[Intro to OpenAI Swarm](notebooks/Swarm_Hello_World.ipynb)** - An introductory notebook for OpenAI's Swarm
 	
 	- **[Intro to OpenAI Agents](notebooks/OpenAI%20Agents.ipynb)** - An introductory notebook for OpenAI's newer Agents SDK
+
+- **LangGraph**
 	
-	- **[Intro to LangGraph](notebooks/LangGraph_Hello_World.ipynb)** - An introductory notebook for LangGraph
 
-		-  **[ReAct Agents in LangGraph](notebooks/LangGraph_React.ipynb)** - Simple ReAct Agent with tools in Langgraph.
+	- **[Intro to LangGraph](notebooks/LangGraph_Hello_World.ipynb)** - An introductory notebook for LangGraph making a RAG workflow
+		
+		-  **[Evaluating LangGraph Workflows](notebooks/LangGraph_Workfow_Eval.ipynb)** - Evaluating our RAG example from above
 
-		- **[Agents playing Chess](https://colab.research.google.com/drive/1NMb4H8q-N0ZgEdaiDd6qUaBLD21yLejD?usp=sharing)** - An implementation of two ReAct Agents playing Chess with each other
+	-  **[Simple ReAct Agents in LangGraph](notebooks/LangGraph_React.ipynb)** - Simple ReAct Agent with tools in Langgraph.
+
+	-  **[ReAct Agents in LangGraph + MCP + Tool Positional Bias](notebooks/LangGraph_React%20-%20MCP%20+%20Tool%20Selection.ipynb)** - Integrating MCP with a ReAct Agent in Langgraph + Testing for Positional Bias
+
+	- **[Agents playing Chess](https://colab.research.google.com/drive/1NMb4H8q-N0ZgEdaiDd6qUaBLD21yLejD?usp=sharing)** - An implementation of two ReAct Agents playing Chess with each other
 
 - **Evaluating Agents**
 

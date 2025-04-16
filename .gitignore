@@ -25,3 +25,5 @@ examples/
 streamlit/secrets.toml
 notebooks/ai.txt
 notebooks/db/
+
+*notebooks/chroma*
