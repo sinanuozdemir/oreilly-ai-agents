@@ -105,6 +105,8 @@ python3 -m jupyter notebook
 ```
 
 - **Using 3rd party agent frameworks**
+
+	- **[Intro to SmolAgents](notebooks/SmolAgents.ipynb)** - An introductory notebook for HuggingFace's SmolAgents
 	
 	- **[Intro to CrewAI](notebooks/CrewAI_Hello_World.ipynb)** - An introductory notebook for CrewAI
 
