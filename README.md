@@ -123,15 +123,17 @@ python3 -m jupyter notebook
 - **LangGraph**
 	
 
-	- **[Intro to LangGraph](notebooks/LangGraph_Hello_World.ipynb)** - An introductory notebook for LangGraph making a RAG workflow
+	- **[LangGraph Workflows 101](notebooks/LangGraph_Hello_World.ipynb)** - An introductory notebook for LangGraph making a RAG workflow
 		
 		-  **[Evaluating LangGraph Workflows](notebooks/LangGraph_Workfow_Eval.ipynb)** - Evaluating our RAG example from above
 
 	-  **[Simple ReAct Agents in LangGraph](notebooks/LangGraph_React.ipynb)** - Simple ReAct Agent with tools in Langgraph.
 
+		-  **[ReAct Agents in LangGraph using Ollama](notebooks/LangGraph_React_Local_LLMs.ipynb)** - Use local llama models for your agents
+
 	-  **[ReAct Agents in LangGraph + MCP + Tool Positional Bias](notebooks/LangGraph_React%20-%20MCP%20+%20Tool%20Selection.ipynb)** - Integrating MCP with a ReAct Agent in Langgraph + Testing for Positional Bias
 
-	- **[Agents playing Chess](https://colab.research.google.com/drive/1NMb4H8q-N0ZgEdaiDd6qUaBLD21yLejD?usp=sharing)** - An implementation of two ReAct Agents playing Chess with each other
+	- **[LangGraph Agents playing Chess](https://colab.research.google.com/drive/1NMb4H8q-N0ZgEdaiDd6qUaBLD21yLejD?usp=sharing)** - An implementation of two ReAct Agents playing Chess with each other
 
 - **Evaluating Agents**
 
