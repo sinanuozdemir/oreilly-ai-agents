@@ -144,7 +144,7 @@ python3 -m jupyter notebook
  	- **[Evaluating Tool Selection](notebooks/agent_positional_bias_tools.ipynb)** - Calculating the accuracy of tool selection between different LLMs and quantifying the positional bias present in auto-regressive LLMs. See the additions [here for V3 + DeepSeek Distilled Models](notebooks/agent_positional_bias_tools%20-%20DEEPSEEK%20edition.ipynb) and [here for DeepSeek R1](notebooks/agent_positional_bias_tools%20-%20DEEPSEEK%20R1.ipynb) and [here for Llama 4](notebooks/agent_positional_bias_tools%20-%20Llama%204.ipynb)
 
 
-- **Building our own agents**
+- **Building our own agent framework**
 	
 	- **[First Steps with our own Agent](https://colab.research.google.com/drive/14jAlW2E7ya_aS1M6eUsuHciC1WvLfIif?usp=sharing)** - Working towards building our own agent framework
 	
@@ -165,7 +165,9 @@ python3 -m jupyter notebook
   	-  Amazon's Nova Act for Browser Use in Action
   		-   run `python nova_apt.py --caltrain_city "Dogpatch" --bedrooms 2 --baths 2` in the notebooks directory
 
+  	-  **[Computer Use with Reasoning LLMs](notebooks/computer_use_reasoning.ipynb)** - Choose a reasoning LLM and let it try to use my machine by pointing and clicking (🚨**WARNING THIS CODE WILL ALLOW AN AI TO USE YOUR LOCAL MACHINE**🚨)
+
 ## Instructor
 
-**Sinan Ozdemir** is the Founder and CTO of LoopGenius where he uses State of the art AI to help people run digital ads on Meta, Google, and more. Sinan is a former lecturer of Data Science at Johns Hopkins University and the author of multiple textbooks on data science and machine learning. Additionally, he is the founder of the recently acquired Kylie.ai, an enterprise-grade conversational AI platform with RPA capabilities. He holds a master’s degree in Pure Mathematics from Johns Hopkins University and is based in San Francisco, CA.
+**Sinan Ozdemir** Sinan is a former lecturer of Data Science at Johns Hopkins University and the author of multiple textbooks on data science and machine learning. Additionally, he is the founder of the recently acquired Kylie.ai, an enterprise-grade conversational AI platform with RPA capabilities. He holds a master’s degree in Pure Mathematics from Johns Hopkins University and is based in San Francisco, CA.
 
