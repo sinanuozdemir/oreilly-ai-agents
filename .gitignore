@@ -28,3 +28,5 @@ notebooks/db/
 
 *notebooks/chroma*
 notebooks/blog-posts/
+
+.env
