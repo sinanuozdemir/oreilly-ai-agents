@@ -5,6 +5,7 @@ google-search-results
 jupyter
 git+https://github.com/openai/swarm.git
 langchain-community
+langchain-openai
 duckduckgo-search
 onnxruntime
 langgraph
