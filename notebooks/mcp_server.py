@@ -18,7 +18,7 @@ def multiply(a: int, b: int) -> int:
 @mcp.tool()
 def google_something(query: str) -> str:
     """Online Realtime Web Search"""
-    serpapi = SerpAPIWrapper(serpapi_api_key="dbfd8b5b815e486ed203c0401c905bbae1a19592b2d785923e4b674f2dc270df")
+    serpapi = SerpAPIWrapper(serpapi_api_key=os.getenv("SERPAPI_API_KEY"))
     return serpapi.run(query)
 
 if __name__ == "__main__":
