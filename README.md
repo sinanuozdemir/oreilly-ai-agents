@@ -135,6 +135,8 @@ python3 -m jupyter notebook
 
 	- **[LangGraph Agents playing Chess](https://colab.research.google.com/drive/1NMb4H8q-N0ZgEdaiDd6qUaBLD21yLejD?usp=sharing)** - An implementation of two ReAct Agents playing Chess with each other
 
+	- **[LangGrapg Middleware](notebooks/langgraph_middleware.ipynb)** - Chat compression, guardrails, and more!
+
 - **Evaluating Agents**
 
 	- **[Evaluating Agent Output with Rubrics](notebooks/Evaluating_LLMs_with_Rubrics.ipynb)** - Exploring a rubric prompt to evaluate generative output. This notebook also notes positional biases when choosing between agent responses.
