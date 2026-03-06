@@ -12,3 +12,5 @@ langgraph
 datasets
 matplotlib
 openai-agents
+smolagents
+ddgs
