@@ -133,9 +133,13 @@ python3 -m jupyter notebook
 
 	-  **[ReAct Agents in LangGraph + MCP + Tool Positional Bias](notebooks/LangGraph_React%20-%20MCP%20+%20Tool%20Selection.ipynb)** - Integrating MCP with a ReAct Agent in Langgraph + Testing for Positional Bias
 
+	-  **[Simple MCP Integration](notebooks/simple_mcp.ipynb)** - Connecting a ReAct Agent to an MCP server for tool use
+
 	- **[LangGraph Agents playing Chess](https://colab.research.google.com/drive/1NMb4H8q-N0ZgEdaiDd6qUaBLD21yLejD?usp=sharing)** - An implementation of two ReAct Agents playing Chess with each other
 
 	- **[LangGrapg Middleware](notebooks/langgraph_middleware.ipynb)** - Chat compression, guardrails, and more!
+
+	- **[Reasoning LLM Agents](notebooks/reasoning_llm_agents.ipynb)** - Using reasoning-capable LLMs (e.g. o1, o3) as ReAct agents
 
 - **Evaluating Agents**
 
@@ -145,6 +149,14 @@ python3 -m jupyter notebook
 
  	- **[Evaluating Tool Selection](notebooks/agent_positional_bias_tools.ipynb)** - Calculating the accuracy of tool selection between different LLMs and quantifying the positional bias present in auto-regressive LLMs. See the additions [here for V3 + DeepSeek Distilled Models](notebooks/agent_positional_bias_tools%20-%20DEEPSEEK%20edition.ipynb) and [here for DeepSeek R1](notebooks/agent_positional_bias_tools%20-%20DEEPSEEK%20R1.ipynb) and [here for Llama 4](notebooks/agent_positional_bias_tools%20-%20Llama%204.ipynb)
 
+
+- **Multi-Agent Systems**
+
+	- **[Parallel Node Execution](notebooks/multi_agent/parallel.ipynb)** - Running LangGraph nodes in parallel with fan-out/fan-in patterns
+
+	- **[Dynamic Agent Network](notebooks/multi_agent/dynamic_network.ipynb)** - A dynamic multi-agent network where agents can route to each other using a generic handoff tool
+
+	- **[Supervisor Pattern](notebooks/multi_agent/supervisor.ipynb)** - A supervisor agent that delegates tasks to specialized sub-agents
 
 - **Building our own agent framework**
 	
@@ -168,6 +180,8 @@ python3 -m jupyter notebook
   		-   run `python nova_apt.py --caltrain_city "Dogpatch" --bedrooms 2 --baths 2` in the notebooks directory
 
   	-  **[Computer Use with Reasoning LLMs](notebooks/computer_use_reasoning.ipynb)** - Choose a reasoning LLM and let it try to use my machine by pointing and clicking (🚨**WARNING THIS CODE WILL ALLOW AN AI TO USE YOUR LOCAL MACHINE**🚨)
+
+  	-  **[Computer Use Reasoning Agent](notebooks/computer_use_reasoning_agent.ipynb)** - A LangGraph-based agent for GUI automation with PyAutoGUI and vision models (🚨**WARNING THIS CODE WILL ALLOW AN AI TO USE YOUR LOCAL MACHINE**🚨)
 
 ## Instructor
 
