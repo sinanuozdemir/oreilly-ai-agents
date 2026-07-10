@@ -1,4 +1,3 @@
-
 from mcp.server.fastmcp import FastMCP
 from langchain_community.utilities import SerpAPIWrapper
 import os

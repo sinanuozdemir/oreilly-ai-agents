@@ -6,6 +6,7 @@ jupyter
 git+https://github.com/openai/swarm.git
 langchain-community
 langchain-openai
+langchain-fireworks
 duckduckgo-search
 onnxruntime
 langgraph
