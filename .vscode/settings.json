@@ -1,0 +1,4 @@
+{
+  "python.defaultInterpreterPath": "~/mcp_venv/bin/python",
+  "python.terminal.activateEnvironment": true
+}
