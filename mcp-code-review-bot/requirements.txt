@@ -1,0 +1,11 @@
+# MCP Code Review Server Dependencies
+# Core MCP
+fastmcp>=0.4.0
+mcp>=1.0.0
+
+# Code Quality Tools
+flake8>=6.0.0
+pytest>=7.0.0
+pytest-cov>=4.0.0
+bandit>=1.7.0
+radon>=6.0.0
