@@ -23,10 +23,10 @@ jobs:
         with:
           fetch-depth: 0  # Full history for git diff
       
-      # Step 2: Build the MCP server Docker image
-      - name: Build MCP server image
+      # Step 2: Install code analysis tools
+      - name: Install tools
         run: |
-          docker build -t mcp-code-review .
+          pip install flake8 bandit
       
       # Step 3: Run the code review
       - name: Run AI Code Review
