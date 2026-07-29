@@ -1,0 +1,6 @@
+# This directory contains benchmark datasets and documents
+# 
+# Structure:
+# - documents/    # Knowledge base documents
+# - benchmarks/   # Test datasets (JSON format)
+# - results/      # Evaluation results (generated)

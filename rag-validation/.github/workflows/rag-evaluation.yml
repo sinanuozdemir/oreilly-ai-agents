@@ -1,0 +1,324 @@
+name: RAG Evaluation Pipeline
+
+on:
+  # Run on pull requests that modify RAG-related files
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'data/**'
+      - 'config/**'
+      - '.github/workflows/rag-evaluation.yml'
+      - 'requirements.txt'
+  
+  # Run on schedule (daily at 2 AM UTC)
+  schedule:
+    - cron: '0 2 * * *'
+  
+  # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      test_size:
+        description: 'Number of test cases to run'
+        required: false
+        default: '100'
+        type: string
+      metrics:
+        description: 'Metrics to evaluate (comma-separated)'
+        required: false
+        default: 'all'
+        type: string
+
+env:
+  PYTHON_VERSION: '3.11'
+  CACHE_VERSION: v1
+
+jobs:
+  # Job 1: Setup and Cache Dependencies
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache.outputs.cache-key }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache Python dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ env.CACHE_VERSION }}-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ env.CACHE_VERSION }}-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+  # Job 2: Run Retrieval Evaluation
+  evaluate-retrieval:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run retrieval evaluation
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python -m src.evaluation \
+            --component retrieval \
+            --output results/retrieval_metrics.json
+
+      - name: Upload retrieval results
+        uses: actions/upload-artifact@v4
+        with:
+          name: retrieval-results
+          path: results/retrieval_metrics.json
+
+  # Job 3: Run Generation Evaluation
+  evaluate-generation:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run generation evaluation
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python -m src.evaluation \
+            --component generation \
+            --output results/generation_metrics.json
+
+      - name: Upload generation results
+        uses: actions/upload-artifact@v4
+        with:
+          name: generation-results
+          path: results/generation_metrics.json
+
+  # Job 4: Run End-to-End Evaluation
+  evaluate-end-to-end:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run end-to-end evaluation
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TEST_SIZE: ${{ github.event.inputs.test_size || '100' }}
+        run: |
+          python -m src.evaluation \
+            --component end-to-end \
+            --test-size $TEST_SIZE \
+            --output results/end_to_end_metrics.json
+
+      - name: Upload end-to-end results
+        uses: actions/upload-artifact@v4
+        with:
+          name: end-to-end-results
+          path: results/end_to_end_metrics.json
+
+  # Job 5: Compare with Baseline and Generate Report
+  generate-report:
+    needs: [evaluate-retrieval, evaluate-generation, evaluate-end-to-end]
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: results
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install pandas matplotlib seaborn
+
+      - name: Generate comparison report
+        run: |
+          python -m src.generate_report \
+            --results-dir results \
+            --baseline baseline_metrics.json \
+            --output report.md
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('report.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report
+            });
+
+      - name: Upload full report
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-report
+          path: |
+            report.md
+            results/
+
+  # Job 6: Regression Testing
+  regression-test:
+    needs: generate-report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download evaluation results
+        uses: actions/download-artifact@v4
+        with:
+          name: end-to-end-results
+          path: results
+
+      - name: Check thresholds
+        run: |
+          python -c "
+          import json
+          import sys
+          
+          with open('results/end_to_end_metrics.json') as f:
+              metrics = json.load(f)
+          
+          thresholds = {
+              'context_recall': 0.75,
+              'context_precision': 0.70,
+              'faithfulness': 0.80,
+              'answer_relevancy': 0.75,
+              'ragas_score': 0.75
+          }
+          
+          failed = []
+          for metric, threshold in thresholds.items():
+              value = metrics.get(metric, 0)
+              if value < threshold:
+                  failed.append(f'{metric}: {value:.3f} < {threshold}')
+          
+          if failed:
+              print('❌ REGRESSION DETECTED:')
+              for f in failed:
+                  print(f'  - {f}')
+              sys.exit(1)
+          else:
+              print('✅ All metrics above thresholds')
+          "
+
+  # Job 7: Performance Benchmarks
+  performance-test:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run performance benchmarks
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python -m src.benchmark_performance \
+            --iterations 100 \
+            --output results/performance.json
+
+      - name: Check latency thresholds
+        run: |
+          python -c "
+          import json
+          import sys
+          
+          with open('results/performance.json') as f:
+              perf = json.load(f)
+          
+          # Check P95 latency < 5 seconds
+          if perf['p95_latency'] > 5.0:
+              print(f'❌ P95 latency {perf[\"p95_latency\"]:.2f}s exceeds 5s threshold')
+              sys.exit(1)
+          
+          print(f'✅ P95 latency: {perf[\"p95_latency\"]:.2f}s')
+          print(f'✅ Mean latency: {perf[\"mean_latency\"]:.2f}s')
+          "
+
+      - name: Upload performance results
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-results
+          path: results/performance.json

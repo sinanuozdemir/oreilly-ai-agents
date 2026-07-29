@@ -1,0 +1,91 @@
+# RAG Evaluation Configuration
+
+# Pipeline settings
+pipeline:
+  embedding_model: "text-embedding-3-small"
+  llm_model: "gpt-3.5-turbo"
+  chunk_size: 512
+  chunk_overlap: 50
+  top_k: 5
+  temperature: 0.0
+
+# Evaluation settings
+evaluation:
+  # Number of test samples to run (null for all)
+  test_size: null
+  
+  # Components to evaluate
+  components:
+    - retrieval
+    - generation
+    - end-to-end
+  
+  # Metrics to compute
+  metrics:
+    retrieval:
+      - context_precision
+      - context_recall
+      - reciprocal_rank
+      - ndcg
+    
+    generation:
+      - faithfulness
+      - answer_relevance
+      - exact_match
+      - f1_score
+    
+    end_to_end:
+      - ragas_score
+
+# Thresholds for regression testing (build fails if below)
+thresholds:
+  context_precision: 0.70
+  context_recall: 0.75
+  faithfulness: 0.80
+  answer_relevance: 0.75
+  ragas_score: 0.75
+  
+  # Latency thresholds (in milliseconds)
+  latency:
+    p50: 2000
+    p95: 5000
+    p99: 8000
+
+# Benchmark datasets
+datasets:
+  # Path to custom benchmark file
+  custom_benchmark: "data/benchmarks/custom.json"
+  
+  # Use synthetic data generation
+  synthetic:
+    enabled: true
+    count: 100
+    distributions:
+      simple: 0.5
+      reasoning: 0.3
+      multi_context: 0.2
+
+# Reporting
+reporting:
+  formats:
+    - json
+    - markdown
+    - html
+  
+  # Save individual sample results
+  save_detailed: true
+  
+  # Compare against baseline
+  compare_baseline: true
+  baseline_path: "baseline_metrics.json"
+
+# Performance testing
+performance:
+  enabled: true
+  iterations: 100
+  warmup_iterations: 10
+
+# Logging
+logging:
+  level: INFO
+  save_intermediate: true
