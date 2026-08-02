@@ -1,0 +1,89 @@
+{
+  "name": "Programming Languages Q&A",
+  "created": "2026-08-01T23:20:21.310168",
+  "description": "Basic questions about programming languages",
+  "categories": [
+    "creator",
+    "history",
+    "features"
+  ],
+  "test_cases": [
+    {
+      "id": "py-001",
+      "category": "creator",
+      "difficulty": "easy",
+      "question": "Who created Python?",
+      "ground_truth_answer": "Python was created by Guido van Rossum.",
+      "required_facts": [
+        "Guido van Rossum",
+        "creator"
+      ],
+      "tags": [
+        "python",
+        "history"
+      ]
+    },
+    {
+      "id": "js-001",
+      "category": "creator",
+      "difficulty": "easy",
+      "question": "Who created JavaScript?",
+      "ground_truth_answer": "JavaScript was created by Brendan Eich in 1995.",
+      "required_facts": [
+        "Brendan Eich",
+        "1995"
+      ],
+      "tags": [
+        "javascript",
+        "history"
+      ]
+    },
+    {
+      "id": "ts-001",
+      "category": "features",
+      "difficulty": "medium",
+      "question": "What is the main difference between TypeScript and JavaScript?",
+      "ground_truth_answer": "TypeScript adds static typing to JavaScript.",
+      "required_facts": [
+        "static typing",
+        "superset"
+      ],
+      "tags": [
+        "typescript",
+        "javascript",
+        "comparison"
+      ]
+    },
+    {
+      "id": "ml-001",
+      "category": "features",
+      "difficulty": "medium",
+      "question": "What is the difference between machine learning and deep learning?",
+      "ground_truth_answer": "Deep learning is a subset of machine learning that uses neural networks with multiple layers.",
+      "required_facts": [
+        "subset",
+        "neural networks",
+        "layers"
+      ],
+      "tags": [
+        "machine-learning",
+        "deep-learning",
+        "comparison"
+      ]
+    },
+    {
+      "id": "py-002",
+      "category": "history",
+      "difficulty": "easy",
+      "question": "When was Python first released?",
+      "ground_truth_answer": "Python was first released in 1991.",
+      "required_facts": [
+        "1991"
+      ],
+      "tags": [
+        "python",
+        "history"
+      ]
+    }
+  ]
+}

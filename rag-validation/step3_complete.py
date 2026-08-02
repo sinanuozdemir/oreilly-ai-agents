@@ -22,12 +22,21 @@ THE 4 KEY METRICS
 RAGAS SCORE = Average of all 4 metrics
 """
 
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
-
-print("Loading model...")
-model = SentenceTransformer('all-MiniLM-L6-v2')
 print("Ready!\n")
+
+
+def simple_similarity(text1, text2):
+    """Simple word overlap similarity (0 to 1)."""
+    words1 = set(w.strip(".,!?;:") for w in text1.lower().split() if len(w) > 3)
+    words2 = set(w.strip(".,!?;:") for w in text2.lower().split() if len(w) > 3)
+    
+    if not words1 or not words2:
+        return 0.0
+    
+    # Jaccard similarity
+    intersection = len(words1 & words2)
+    union = len(words1 | words2)
+    return intersection / union if union > 0 else 0.0
 
 
 def evaluate_rag(query, answer, retrieved_docs, relevant_docs):
@@ -59,14 +68,11 @@ def evaluate_rag(query, answer, retrieved_docs, relevant_docs):
     # METRIC 3: Faithfulness
     # Does the answer match the retrieved context?
     context_text = " ".join(retrieved_docs)
-    ans_emb = model.encode([answer])
-    ctx_emb = model.encode([context_text])
-    results['faithfulness'] = float(cosine_similarity(ans_emb, ctx_emb)[0][0])
+    results['faithfulness'] = simple_similarity(answer, context_text)
     
     # METRIC 4: Answer Relevance
     # Does the answer actually address the question?
-    qry_emb = model.encode([query])
-    results['answer_relevance'] = float(cosine_similarity(qry_emb, ans_emb)[0][0])
+    results['answer_relevance'] = simple_similarity(query, answer)
     
     # OVERALL RAGAS SCORE
     # Average of the 4 key metrics

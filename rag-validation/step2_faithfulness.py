@@ -22,25 +22,15 @@ Unfaithful Answer: "Python was created by Bill Gates at Microsoft"
 
 HOW WE MEASURE IT
 -----------------
-We use "embeddings" - mathematical representations of meaning.
-- Convert answer to numbers (embedding)
-- Convert context to numbers (embedding)  
-- Compare how similar they are (cosine similarity)
-- Score: 0 (completely different) to 1 (identical meaning)
+Method 1: Simple keyword overlap (we'll use this - no install needed!)
+Method 2: Embeddings - mathematical representations of meaning (advanced)
 """
 
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
 
-print("Loading embedding model (downloads ~80MB on first run)...")
-print("This model converts text to numbers that represent meaning.")
-model = SentenceTransformer('all-MiniLM-L6-v2')
-print("✓ Model loaded!\n")
-
-
-def faithfulness_score(answer, context_docs):
+def simple_faithfulness_score(answer, context_docs):
     """
-    Measure how faithful the answer is to the context.
+    Simple faithfulness check using keyword overlap.
+    No external libraries needed!
     
     Args:
         answer: The AI's generated answer
@@ -49,17 +39,47 @@ def faithfulness_score(answer, context_docs):
     Returns:
         Score from 0.0 (unfaithful) to 1.0 (perfectly faithful)
     """
-    # Combine all context into one string
-    full_context = " ".join(context_docs)
+    # Combine all context
+    full_context = " ".join(context_docs).lower()
+    answer_lower = answer.lower()
     
-    # Convert text to embeddings (numbers that capture meaning)
-    answer_emb = model.encode([answer])
-    context_emb = model.encode([full_context])
+    # Extract key words from answer (longer words are more meaningful)
+    answer_words = set(word.strip(".,!?;:") for word in answer_lower.split() if len(word) > 3)
     
-    # Calculate similarity (how close in meaning)
-    similarity = cosine_similarity(answer_emb, context_emb)[0][0]
+    if not answer_words:
+        return 0.0
     
-    return float(similarity)
+    # Count how many answer words appear in context
+    matching_words = sum(1 for word in answer_words if word in full_context)
+    
+    # Score is the percentage of answer words found in context
+    score = matching_words / len(answer_words)
+    
+    return score
+
+
+def detailed_faithfulness_check(answer, context_docs):
+    """
+    Detailed breakdown of faithfulness.
+    """
+    full_context = " ".join(context_docs).lower()
+    answer_lower = answer.lower()
+    
+    # Get significant words from answer
+    answer_words = [word.strip(".,!?;:") for word in answer_lower.split() if len(word) > 3]
+    
+    found = []
+    missing = []
+    
+    for word in answer_words:
+        if word in full_context:
+            found.append(word)
+        else:
+            missing.append(word)
+    
+    score = len(found) / len(answer_words) if answer_words else 0
+    
+    return score, found, missing
 
 
 # ========== EXAMPLE 1: Perfect Faithfulness ==========
@@ -74,7 +94,7 @@ context = [
 
 answer = "Python was created by Guido van Rossum in 1991."
 
-score = faithfulness_score(answer, context)
+score = simple_faithfulness_score(answer, context)
 
 print("Context provided to AI:")
 for doc in context:
@@ -98,7 +118,7 @@ context = [
 
 answer = "Python was created by James Gosling in 1995 at Sun Microsystems."
 
-score = faithfulness_score(answer, context)
+score, found, missing = detailed_faithfulness_check(answer, context)
 
 print("Context provided to AI:")
 for doc in context:
@@ -106,6 +126,8 @@ for doc in context:
 
 print(f"\nAI's Answer: {answer}")
 print(f"Faithfulness Score: {score:.3f} ({score:.1%})")
+print(f"\nWords FOUND in context: {found}")
+print(f"Words NOT in context: {missing}")
 
 print("\n❌ HALLUCINATION: Answer contradicts the context!")
 print("   Wrong creator: James Gosling created Java, not Python")
@@ -125,7 +147,7 @@ context = [
 
 answer = "You can return items within 30 days, and sale items are refundable too."
 
-score = faithfulness_score(answer, context)
+score, found, missing = detailed_faithfulness_check(answer, context)
 
 print("Context provided to AI:")
 for doc in context:
@@ -133,6 +155,8 @@ for doc in context:
 
 print(f"\nAI's Answer: {answer}")
 print(f"Faithfulness Score: {score:.3f} ({score:.1%})")
+print(f"\nWords FOUND in context: {found}")
+print(f"Words NOT in context: {missing}")
 
 print("\n⚠️  WARNING: Partially faithful!")
 print("   ✓ True: You can return within 30 days")
@@ -153,7 +177,7 @@ context = [
 # AI adds info NOT in context but is common knowledge
 answer = "Python was created by Guido van Rossum in 1991 and is popular for AI."
 
-score = faithfulness_score(answer, context)
+score, found, missing = detailed_faithfulness_check(answer, context)
 
 print("Context provided to AI:")
 for doc in context:
@@ -161,8 +185,10 @@ for doc in context:
 
 print(f"\nAI's Answer: {answer}")
 print(f"Faithfulness Score: {score:.3f} ({score:.1%})")
+print(f"\nWords FOUND in context: {found}")
+print(f"Words NOT in context: {missing}")
 
-print("\n⚠️  The AI added 'popular for AI' which wasn't in the context.")
+print("\n⚠️  The AI added 'popular' and 'intelligence' which weren't in the context.")
 print("   Even though it's true in real life, it's not in the provided docs.")
 print("   In strict RAG, we want the AI to ONLY use the provided context.")
 
@@ -220,11 +246,13 @@ test_cases = [
 ]
 
 for case in test_cases:
-    score = faithfulness_score(case["answer"], case["context"])
+    score, found, missing = detailed_faithfulness_check(case["answer"], case["context"])
     print(f"\n{case['name']}:")
     print(f"  Context: {case['context'][0]}")
     print(f"  Answer: {case['answer']}")
     print(f"  Faithfulness: {score:.3f} ({score:.1%})")
+    print(f"  Found: {found}")
+    print(f"  Missing: {missing}")
     
     if score > 0.8:
         print("  ✅ Faithful")
