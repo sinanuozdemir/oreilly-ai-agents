@@ -1,0 +1,111 @@
+name: 🤖 AI Code Review Agent
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '**.py'
+      - '**.js'
+      - '**.ts'
+      - '**.java'
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to analyze'
+        required: true
+        type: string
+
+env:
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+    name: AI Code Review
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better analysis
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          pip install chromadb openai requests PyGithub
+
+      - name: Get PR diff
+        id: get-diff
+        run: |
+          # Get the files changed in this PR
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed_files.txt
+          echo "Changed files:"
+          cat changed_files.txt
+
+      - name: Run Code Review Agent
+        id: review
+        run: |
+          python .github/scripts/review_pr.py \
+            --pr-number ${{ github.event.pull_request.number || github.event.inputs.pr_number }} \
+            --repo ${{ github.repository }} \
+            --changed-files changed_files.txt
+
+      - name: Post review comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const reviewReport = fs.readFileSync('review_report.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: reviewReport
+            });
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-results
+          path: |
+            review_report.md
+            impact_analysis.json
+            test_suggestions.json
+
+  # Optional: Update vector DB with new code changes
+  update-codebase-index:
+    runs-on: ubuntu-latest
+    name: Update Codebase Index
+    if: github.event.pull_request.merged == true
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install chromadb openai
+
+      - name: Update vector database
+        run: |
+          python .github/scripts/update_codebase_index.py \
+            --repo ${{ github.repository }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

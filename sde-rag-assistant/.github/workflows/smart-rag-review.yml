@@ -1,0 +1,127 @@
+name: 🧠 Smart RAG Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: 'Base ref to compare against'
+        default: 'HEAD~1'
+        required: false
+
+env:
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  smart-review:
+    runs-on: ubuntu-latest
+    name: Context-Aware Code Review
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full git history for analysis
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Smart RAG Review
+        run: |
+          python .github/scripts/smart_review.py \
+            --pr-number ${{ github.event.pull_request.number || 0 }} \
+            --base-ref ${{ github.event.pull_request.base.sha || 'HEAD~1' }} \
+            --head-ref ${{ github.event.pull_request.head.sha || 'HEAD' }} \
+            --output smart_review_report.md
+
+      - name: Comment PR with Review
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('smart_review_report.md', 'utf8');
+            
+            // Find existing bot comment
+            const comments = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            
+            const botComment = comments.data.find(comment => 
+              comment.user.login === 'github-actions[bot]' && 
+              comment.body.includes('🤖 Smart Code Review Report')
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                comment_id: botComment.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: report
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: report
+              });
+            }
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: smart-review-results
+          path: |
+            smart_review_report.md
+            rag_analysis.json
+            smart_suggestions.json
+
+  # Check for test coverage gaps
+  test-coverage-check:
+    runs-on: ubuntu-latest
+    name: Test Coverage Analysis
+    needs: smart-review
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Check test coverage
+        run: |
+          python .github/scripts/check_test_coverage.py \
+            --pr-number ${{ github.event.pull_request.number || 0 }}
+
+      - name: Comment on test gaps
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const fs = require('fs');
+            try {
+              const coverage = fs.readFileSync('test_coverage_report.md', 'utf8');
+              
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: coverage
+              });
+            } catch (e) {
+              console.log('No coverage report to post');
+            }
