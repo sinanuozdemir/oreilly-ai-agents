@@ -22,6 +22,10 @@ import chromadb
 from chromadb.utils import embedding_functions
 import os
 from typing import List, Dict
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Connect to database
 print("🔌 Connecting to vector database...")
@@ -29,10 +33,21 @@ client = chromadb.PersistentClient(path="./vector_db")
 collection = client.get_collection("codebase")
 
 # Set up embedding function
-openai_ef = embedding_functions.OpenAIEmbeddingFunction(
-    api_key=os.getenv("OPENAI_API_KEY"),
-    model_name="text-embedding-3-small"
-)
+openai_api_key = os.getenv("OPENAI_API_KEY")
+if not openai_api_key:
+    print("\n⚠️  WARNING: OPENAI_API_KEY not found!")
+    print("   Please set it: export OPENAI_API_KEY='sk-your-key'")
+    print("   Or create a .env file with: OPENAI_API_KEY=sk-your-key")
+    print("\n   For now, using simple keyword-based search (limited functionality)\n")
+    
+    # Simple fallback - just for demo purposes
+    openai_ef = None
+else:
+    print(f"✓ OpenAI API key found (ends with ...{openai_api_key[-4:]})")
+    openai_ef = embedding_functions.OpenAIEmbeddingFunction(
+        api_key=openai_api_key,
+        model_name="text-embedding-3-small"
+    )
 
 print("✅ Connected to database")
 print(f"   Total documents: {collection.count()}")

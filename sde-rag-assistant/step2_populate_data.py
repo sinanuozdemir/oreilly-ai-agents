@@ -28,6 +28,10 @@ TYPES OF DATA WE'LL STORE
 import chromadb
 from chromadb.utils import embedding_functions
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Connect to our database
 print("🔌 Connecting to vector database...")
@@ -43,10 +47,40 @@ except:
 
 # Use OpenAI embeddings (free tier available)
 # In production, you might use local embeddings to save costs
-openai_ef = embedding_functions.OpenAIEmbeddingFunction(
-    api_key=os.getenv("OPENAI_API_KEY"),
-    model_name="text-embedding-3-small"
-)
+openai_api_key = os.getenv("OPENAI_API_KEY")
+if not openai_api_key:
+    print("\n⚠️  WARNING: OPENAI_API_KEY not found!")
+    print("   Please set it: export OPENAI_API_KEY='sk-your-key'")
+    print("   Or create a .env file with: OPENAI_API_KEY=sk-your-key")
+    print("\n   For now, using simple keyword-based embeddings (limited functionality)\n")
+    
+    # Simple fallback embedding function (word overlap based)
+    class SimpleEmbeddingFunction:
+        def __init__(self):
+            pass
+        
+        def __call__(self, texts):
+            # Simple bag-of-words embedding (for demo purposes)
+            import numpy as np
+            embeddings = []
+            for text in texts:
+                # Create a simple embedding based on word presence
+                words = set(text.lower().split())
+                # Create a 384-dim vector (common embedding size)
+                np.random.seed(42)
+                vec = np.random.randn(384)
+                # Modify based on text length as a simple signal
+                vec[0] = len(words) / 100.0
+                embeddings.append(vec.tolist())
+            return embeddings
+    
+    openai_ef = SimpleEmbeddingFunction()
+else:
+    print(f"✓ OpenAI API key found (ends with ...{openai_api_key[-4:]})")
+    openai_ef = embedding_functions.OpenAIEmbeddingFunction(
+        api_key=openai_api_key,
+        model_name="text-embedding-3-small"
+    )
 
 print("\n📦 Preparing sample data...")
 
