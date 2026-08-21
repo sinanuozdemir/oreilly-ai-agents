@@ -1,0 +1,45 @@
+# Core dependencies for Ping Identity Interview Prep
+
+# MCP (Model Context Protocol)
+mcp>=1.0.0
+
+# HTTP/Server
+fastapi>=0.104.0
+uvicorn>=0.24.0
+httpx>=0.25.0
+
+# AI/LLM Integration
+openai>=1.0.0
+anthropic>=0.8.0
+
+# Data Validation & Processing
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+jsonschema>=4.20.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+
+# Security & Cryptography
+PyJWT>=2.8.0
+cryptography>=41.0.0
+bcrypt>=4.1.0
+
+# Async Support
+asyncio>=3.4.3
+aiohttp>=3.9.0
+
+# Observability & Logging
+structlog>=23.2.0
+prometheus-client>=0.19.0
+
+# CI/CD & Quality
+pre-commit>=3.5.0
+black>=23.11.0
+ruff>=0.1.6
+mypy>=1.7.0
+
+# Data Storage (for examples)
+redis>=5.0.0
