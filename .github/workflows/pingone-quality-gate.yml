@@ -1,0 +1,75 @@
+# ─────────────────────────────────────────────────────────────────────
+# PingOne Quality Gate — Step 4 of pingone-real-testing
+#
+# Every PR runs:
+#   GATE  (blocking):      Step 2 API suite — deterministic, fast
+#   REPORT (informational): Step 3 AI pipeline — LLM non-determinism
+#                           must not block merges (see CONCEPTS.md §5)
+#
+# Secrets come from GitHub → Settings → Secrets → Actions.
+# The code reads os.environ either way — no .env in CI.
+# ─────────────────────────────────────────────────────────────────────
+
+name: PingOne Quality Gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Cancel stale runs when a PR gets new commits — saves runner minutes
+concurrency:
+  group: quality-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      # Same variable names as the local .env — code never changes
+      PINGONE_ENVIRONMENT_ID: ${{ secrets.PINGONE_ENVIRONMENT_ID }}
+      PINGONE_CLIENT_ID: ${{ secrets.PINGONE_CLIENT_ID }}
+      PINGONE_CLIENT_SECRET: ${{ secrets.PINGONE_CLIENT_SECRET }}
+      PINGONE_REGION: ${{ vars.PINGONE_REGION || 'com' }}
+      # Optional: without this, Step 3 uses deterministic fallback specs
+      MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install requests openai python-dotenv
+
+      # ────────────────────────────────────────────────────────────
+      # THE GATE — blocking. Exit 1 here = red X = merge blocked.
+      # Deterministic: 8 tests, live tenant, no LLM.
+      # ────────────────────────────────────────────────────────────
+      - name: 🚪 GATE — Step 2 API test suite
+        working-directory: pingone-real-testing/step2_api_testing
+        run: python test_pingone_api.py
+
+      # ────────────────────────────────────────────────────────────
+      # THE REPORT — informational. Shows the evaluator working on
+      # every PR, but LLM flakiness never blocks a merge.
+      # ────────────────────────────────────────────────────────────
+      - name: 📊 REPORT — Step 3 AI generation + evaluator gauntlet
+        working-directory: pingone-real-testing/step3_ai_generation
+        continue-on-error: true
+        run: python run_pipeline.py -n 6
+
+      - name: 📋 Gate summary
+        if: always()
+        run: |
+          echo "## Quality Gate Result" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Step 2 API suite** (blocking): see job status above" >> $GITHUB_STEP_SUMMARY
+          echo "- **Step 3 AI pipeline** (informational): check the step log for the rejection-rate report" >> $GITHUB_STEP_SUMMARY
